@@ -1,4 +1,10 @@
 class QpnSettings():
+    # Global Settings
+    '''
+    Debug mode: If true, additional information is printed to the console
+    '''
+    DEBUG = True
+
     # Grid Scene Settings
     '''
     Default canvas size in pixels (default=64,000)
@@ -77,9 +83,9 @@ class QpnSettings():
     NodeTitleFont = 'Inter'
 
     '''
-    Font size for node title (default=10pt)
+    Font size for node title (default=12pt)
     '''
-    NodeTitleFontSize = 10
+    NodeTitleFontSize = 12
 
     '''
     Roundedness (in pixels) of the node box (default=?)
@@ -110,3 +116,8 @@ class QpnSettings():
     Node content background color in hex RGB (default='#212121')
     '''
     NodeContentBackgroundColor = '#212121'
+
+    '''
+    Padding size within the node
+    '''
+    NodePadding = 5

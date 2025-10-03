@@ -2,15 +2,24 @@ import math
 
 from PyQt5.QtWidgets import QGraphicsScene
 from PyQt5.QtGui import QColor, QPainter, QPen
-from PyQt5.QtCore import QRectF, QLine
+from PyQt5.QtCore import QRectF, QLine, QEvent
+
+from QpnNode import QpnNode
+from QpnNoodle import QpnNoodle
 
 from QpnSettings import QpnSettings
 
 class QpnGraphicsScene(QGraphicsScene):
-    def __init__(self, scene, parent=None):
+    # def __init__(self, scene, parent=None):
+    def __init__(self, parent=None):
         super(QpnGraphicsScene, self).__init__(parent)
+        self._nodes = []
+        self._edges = []
 
-        self.scene = scene
+        self._scene_height = self._scene_width = QpnSettings.GridSceneSize
+        self.SetScene(self._scene_width, self._scene_height)
+
+        # self.scene = scene
 
         self.minorLinePen = QPen(QColor(QpnSettings.GridColorMinor))
         self.minorLinePen.setWidth(QpnSettings.GridLineWidthMinor)
@@ -66,3 +75,24 @@ class QpnGraphicsScene(QGraphicsScene):
             painter.setPen(self.majorLinePen)
             painter.drawLines(*lines_major)
 
+
+    def contextMenuEvent(self, event:QEvent):
+        pass
+    
+
+    def AddNode(self, node: QpnNode):
+        self._nodes.append(node)
+        self.addItem(node)
+
+
+    def RemoveNode(self, node: QpnNode):
+        self._nodes.remove(node)
+        self.removeItem(node)
+
+
+    def AddEdge(self, edge: QpnNoodle):
+        self._edges.append(edge)
+
+
+    def RemoveEdge(self, edge: QpnNoodle):
+        self._edges.remove(edge)

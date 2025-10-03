@@ -60,12 +60,10 @@ class QpnGraphicsView(QGraphicsView):
 
     def LeftMouseButtonPress(self, event: QMouseEvent):
         super().mousePressEvent(event)
-        pass
     
 
     def LeftMouseButtonRelease(self, event: QMouseEvent):
         super().mouseReleaseEvent(event)
-        pass
 
 
     def MiddleMouseButtonPress(self, event: QMouseEvent):
@@ -92,12 +90,10 @@ class QpnGraphicsView(QGraphicsView):
 
     def RightMouseButtonPress(self, event: QMouseEvent):
         super().mousePressEvent(event)
-        pass
 
 
     def RightMouseButtonRelease(self, event: QMouseEvent):
         super().mouseReleaseEvent(event)
-        pass
 
 
     '''
