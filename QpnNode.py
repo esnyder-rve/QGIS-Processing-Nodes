@@ -137,10 +137,19 @@ class QpnNode(QGraphicsItem):
                     self.addLabel(input.description)
                     enumInputList = QComboBox()
                     # FIXME: add the actual values from the API
-                    enumInputList.addItem("Option A", 0)
-                    enumInputList.addItem("Option B", 1)
-                    enumInputList.addItem("Option C", 2)
-                    enumInputList.addItem("Option D", 3)
+                    if input.options is None:
+                        enumInputList.addItem("Option A", 0)
+                        enumInputList.addItem("Option B", 1)
+                        enumInputList.addItem("Option C", 2)
+                        enumInputList.addItem("Option D", 3)
+                    else:
+                        paramOptions = input.options
+                        if 'enumValues' in paramOptions:
+                            for value in paramOptions['enumValues']:
+                                enumInputList.addItem(str(value[1]), str(value[0]))
+                            if 'defaultValue' in paramOptions:
+                                # FIXME: actually find the index for the default value
+                                enumInputList.setCurrentIndex(0)
                     self.addInput(input.dataType, input.description, input.toolTip, enumInputList)
                 elif input.dataType.atLeast(QpnDataType.String):
                     self.addLabel(input.description)
@@ -153,7 +162,16 @@ class QpnNode(QGraphicsItem):
                 elif input.dataType.atLeast(QpnDataType.Numeric):
                     self.addLabel(input.description)
                     numberInputText = QDoubleSpinBox()
+
                     numberInputText.setValue(0.0)
+                    if input.options is not None:
+                        if 'minValue' in input.options:
+                            numberInputText.setMinimum(float(input.options['minValue']))
+                        if 'maxValue' in input.options:
+                            numberInputText.setMaximum(float(input.options['maxValue']))
+                        if 'defaultValue' in input.options:
+                            numberInputText.setValue(input.options['defaultValue'])
+
                     self.addInput(input.dataType, input.description, input.toolTip, numberInputText)
                 else:
                     # Regular socket, no input widget

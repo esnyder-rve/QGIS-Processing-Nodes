@@ -185,6 +185,10 @@ class QpnSocket(QGraphicsItem):
             self._shape = QpnSocketShape.Diamond(12)
             self.setRenderingSettings(1, QColor('#FF000000'), QColor('#FFBE7DBB'))
 
+        elif dataType.atLeast(QpnDataType.Numeric):
+            self._shape = QpnSocketShape.Circle(12)
+            self.setRenderingSettings(1, QColor('#FF000000'), QColor('#FF828282'))
+
         elif dataType.atLeast(QpnDataType.AddWild):
             self._shape = QpnSocketShape.Circle(12)
             self.setRenderingSettings(2, QColor('#FF4C4C4C'), QColor('#FF1A1A1A'))

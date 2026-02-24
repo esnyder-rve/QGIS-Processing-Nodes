@@ -21,6 +21,11 @@ class PdalAlgRegistry(metaclass=Singleton):
         self._algsList[PDAL.PdalPipelineReaderCopc.algName] = PDAL.PdalPipelineReaderCopc
         self._algsList[PDAL.PdalPipelineWriterArrow.algName] = PDAL.PdalPipelineWriterArrow
         self._algsList[PDAL.PdalPipelineFilterCsf.algName] = PDAL.PdalPipelineFilterCsf
+        self._algsList[PDAL.PdalPipelineFilterPmf.algName] = PDAL.PdalPipelineFilterPmf
+        self._algsList[PDAL.PdalPipelineFilterSkewnessBalancing.algName] = PDAL.PdalPipelineFilterSkewnessBalancing
+        self._algsList[PDAL.PdalPipelineFilterSmrf.algName] = PDAL.PdalPipelineFilterSmrf
+        self._algsList[PDAL.PdalPipelineFilterSparseSurface.algName] = PDAL.PdalPipelineFilterSparseSurface
+        self._algsList[PDAL.PdalPipelineFilterTrajectory.algName] = PDAL.PdalPipelineFilterTrajectory
 
     def algorithms(self) -> List[QpnAlgorithm]:
         # return list of algs

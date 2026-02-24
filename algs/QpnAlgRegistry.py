@@ -19,6 +19,13 @@ class QpnAlgRegistry(metaclass=Singleton):
         self._algsList[QPN.QpnAlgModelOutput.algName] = QPN.QpnAlgModelOutput
         self._algsList[QPN.QpnAlgTestNode.algName] = QPN.QpnAlgTestNode
         self._algsList[QPN.QpnRasterBandSelector.algName] = QPN.QpnRasterBandSelector
+        self._algsList[QPN.QpnIteratorForEachFeature.algName] = QPN.QpnIteratorForEachFeature
+        self._algsList[QPN.QpnIteratorForEachVectorLayer.algName] = QPN.QpnIteratorForEachVectorLayer
+        self._algsList[QPN.QpnIteratorForEachRasterBand.algName] = QPN.QpnIteratorForEachRasterBand
+        self._algsList[QPN.QpnBranchJoiner.algName] = QPN.QpnBranchJoiner
+        self._algsList[QPN.QpnConditionalIf.algName] = QPN.QpnConditionalIf
+        self._algsList[QPN.SagaFlowAccumulationD8.algName] = QPN.SagaFlowAccumulationD8
+        self._algsList[QPN.SagaFlowAccumulationMFD.algName] = QPN.SagaFlowAccumulationMFD
 
     def algorithms(self) -> List[QpnAlgorithm]:
         # return list of algs

@@ -452,6 +452,7 @@ PdalPipelineWriterArrow.addOutput(
 # Pipeline - Filters #
 ######################
 
+# filters.csf
 PdalPipelineFilterCsf = QpnAlgorithm(
     'pdal:pipelinefilterscsf',
     'filters.csf',
@@ -573,7 +574,11 @@ PdalPipelineFilterCsf.addInput(
         "Maximum number of iterations",
         False,
         False,
-        {'defaultValue': 500}
+        {
+            'minValue': 0,
+            'maxValue': 1000,
+            'defaultValue': 500
+        }
     )
 )
 PdalPipelineFilterCsf.addInput(
@@ -604,6 +609,554 @@ PdalPipelineFilterCsf.addInput(
     )
 )
 PdalPipelineFilterCsf.addOutput(
+    QpnAlgorithmOutput(
+        'OUTPUT',
+        QpnDataType.PointCloudLayer,
+        'Output Point Cloud',
+        'Output point cloud layer',
+        True
+    )
+)
+
+# filters.pmf
+PdalPipelineFilterPmf = QpnAlgorithm(
+    "pdal:pipelinefilterpmf",
+    "filters.pmf",
+    "Progressive Morphological Filter"
+)
+PdalPipelineFilterPmf.provider = 'PDAL'
+PdalPipelineFilterPmf.group = 'Pipeline - Filters'
+PdalPipelineFilterPmf.help = "The Progressive Morphological Filter (PMF) is a method of segmenting ground and non-ground returns. This filter is an implementation of the method described in [Zang et al., 2003]."
+
+PdalPipelineFilterPmf.addInput(
+    QpnAlgorithmInput(
+        'INPUT',
+        QpnDataType.PointCloudLayer,
+        'Input Point Cloud',
+        'Input point cloud layer',
+        False,
+        False
+    )
+)
+PdalPipelineFilterPmf.addInput(
+    QpnAlgorithmInput(
+        'CELLSIZE',
+        QpnDataType.Numeric,
+        'Cell Size',
+        'Cell Size',
+        False,
+        False,
+        {'defaultValue': 1}
+    )
+)
+PdalPipelineFilterPmf.addInput(
+    QpnAlgorithmInput(
+        'EXPONENTIAL',
+        QpnDataType.Boolean,
+        'Exponential',
+        "Use exponential growth for window size?",
+        False,
+        False,
+        {'defaultValue': True}
+    )
+)
+PdalPipelineFilterPmf.addInput(
+    QpnAlgorithmInput(
+        'IGNORE',
+        QpnDataType.String,
+        'Ignore',
+        "Range of values to ignore",
+        False,
+        False,
+        {'defaultValue': None}
+    )
+)
+PdalPipelineFilterPmf.addInput(
+    QpnAlgorithmInput(
+        'INITIALDISTANCE',
+        QpnDataType.Numeric,
+        'Initial Distance',
+        'Initial Distance',
+        False,
+        False,
+        {'defaultValue': 0.15}
+    )
+)
+PdalPipelineFilterPmf.addInput(
+    QpnAlgorithmInput(
+        'RETURNS',
+        QpnDataType.String,
+        'Returns',
+        "Comma-separated list of return types into which data should be segmented. Valid groups are `last`, `first`, `intermediate`, and `only`.",
+        False,
+        False,
+        {'defaultValue': 'last,only'}
+    )
+)
+PdalPipelineFilterPmf.addInput(
+    QpnAlgorithmInput(
+        'MAXDISTANCE',
+        QpnDataType.Numeric,
+        'Maximum Distance',
+        'Maximum Distance',
+        False,
+        False,
+        {'defaultValue': 2.5}
+    )
+)
+PdalPipelineFilterPmf.addInput(
+    QpnAlgorithmInput(
+        'MAXWINDOWSIZE',
+        QpnDataType.Numeric,
+        'Maximum Window Size',
+        'Maximum Window Size',
+        False,
+        False,
+        {'defaultValue': 33}
+    )
+)
+PdalPipelineFilterPmf.addInput(
+    QpnAlgorithmInput(
+        'SLOPE',
+        QpnDataType.Numeric,
+        'Slope',
+        'Slope',
+        False,
+        False,
+        {'defaultValue': 1.0}
+    )
+)
+PdalPipelineFilterPmf.addInput(
+    QpnAlgorithmInput(
+        'WHERE',
+        QpnDataType.String,
+        'Where',
+        "An expression that limits points passed to this filter.",
+        False,
+        False,
+        {'defaultValue': None}
+    )
+)
+PdalPipelineFilterPmf.addInput(
+    QpnAlgorithmInput(
+        'WHEREMERGE',
+        QpnDataType.Enum,
+        'Where Merge',
+        "A strategy for merging points skipped by a `where` option when running in standard mode. If true, the skipped points are added to the first point view returned by the skipped filter or if no views are returned, placed in their own view. If false, skipped points are placed in their own point view. If auto, skipped points are merged into the returned point view provided that only one point view is returned and it has the same point count as it did when the filter was run, otherwise the skipped points are placed in their own view.",
+        False,
+        False,
+        {'enumValues':
+            [
+                ('auto', 'auto'),
+                ('true', 'true'),
+                ('false', 'false')],
+            'defaultValue': 'auto'}
+    )
+)
+PdalPipelineFilterPmf.addOutput(
+    QpnAlgorithmOutput(
+        'OUTPUT',
+        QpnDataType.PointCloudLayer,
+        'Output Point Cloud',
+        'Output point cloud layer',
+        True
+    )
+)
+
+# filters.skewnessbalancing
+PdalPipelineFilterSkewnessBalancing = QpnAlgorithm(
+    'pdal:pipelinefilterskewnessbalancing',
+    'filters.skewnessbalancing',
+    'Skewness Balancing',
+)
+PdalPipelineFilterSkewnessBalancing.provider = 'PDAL'
+PdalPipelineFilterSkewnessBalancing.group = 'Pipeline - Filters'
+PdalPipelineFilterSkewnessBalancing.help = 'Skewness Balancing classifies ground points based on the approach outlined in [Bartels and Wei, 2010].'
+
+PdalPipelineFilterSkewnessBalancing.addInput(
+    QpnAlgorithmInput(
+        'INPUT',
+        QpnDataType.PointCloudLayer,
+        'Input Point Cloud',
+        'Input point cloud layer',
+        False,
+        False
+    )
+)
+PdalPipelineFilterSkewnessBalancing.addInput(
+    QpnAlgorithmInput(
+        'WHERE',
+        QpnDataType.String,
+        'Where',
+        "An expression that limits points passed to this filter.",
+        False,
+        False,
+        {'defaultValue': None}
+    )
+)
+PdalPipelineFilterSkewnessBalancing.addInput(
+    QpnAlgorithmInput(
+        'WHEREMERGE',
+        QpnDataType.Enum,
+        'Where Merge',
+        "A strategy for merging points skipped by a `where` option when running in standard mode. If true, the skipped points are added to the first point view returned by the skipped filter or if no views are returned, placed in their own view. If false, skipped points are placed in their own point view. If auto, skipped points are merged into the returned point view provided that only one point view is returned and it has the same point count as it did when the filter was run, otherwise the skipped points are placed in their own view.",
+        False,
+        False,
+        {'enumValues':
+            [
+                ('auto', 'auto'),
+                ('true', 'true'),
+                ('false', 'false')],
+            'defaultValue': 'auto'}
+    )
+)
+PdalPipelineFilterSkewnessBalancing.addOutput(
+    QpnAlgorithmOutput(
+        'OUTPUT',
+        QpnDataType.PointCloudLayer,
+        'Output Point Cloud',
+        'Output point cloud layer',
+        True
+    )
+)
+# filters.smrf
+PdalPipelineFilterSmrf = QpnAlgorithm(
+    'pdal:pipelinefiltersmrf',
+    'filters.smrf',
+    'Simple Morphological Filter (SMRF)',
+)
+PdalPipelineFilterSmrf.provider = 'PDAL'
+PdalPipelineFilterSmrf.group = 'Pipeline - Filters'
+PdalPipelineFilterSmrf.help = 'The Simple Morphological Filter (SMRF) classifies ground points based on the approach outlined in [Pingel et al., 2013].'
+
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'INPUT',
+        QpnDataType.PointCloudLayer,
+        'Input Point Cloud',
+        'Input point cloud layer',
+        False,
+        False
+    )
+)
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'CELL',
+        QpnDataType.Numeric,
+        'Cell',
+        'Cell size',
+        False,
+        False,
+        {'defaultValue': 1.0}
+    )
+)
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'CLASSBITS',
+        QpnDataType.String,
+        'Class Bits',
+        "Selectively ignore points marked as 'synthetic', 'keypoint', or 'withheld'.",
+        False,
+        False,
+        {'defaultValue': None}
+    )
+)
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'CUT',
+        QpnDataType.Numeric,
+        'Cut',
+        'Cut net size (`cut=0` skips the net cutting step)',
+        False,
+        False,
+        {'defaultValue': 0.0}
+    )
+)
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'DIR',
+        QpnDataType.Folder,
+        'Dir',
+        'Optional output directory for debugging intermediate rasters.',
+        False,
+        False,
+        {'defaultValue': None}
+    )
+)
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'IGNORE',
+        QpnDataType.String,
+        'Ignore',
+        "A range of values of a dimension to ignore.",
+        False,
+        False,
+        {'defaultValue': None}
+    )
+)
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'RETURNS',
+        QpnDataType.String,
+        'Returns',
+        "Comma-separated list of return types into which data should be segmented. Valid groups are `last`, `first`, `intermediate`, and `only`.",
+        False,
+        False,
+        {'defaultValue': 'last,only'}
+    )
+)
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'SCALAR',
+        QpnDataType.Numeric,
+        'Scalar',
+        "Elevation scalar.",
+        False,
+        False,
+        {'defaultValue': 1.25}
+    )
+)
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'SLOPE',
+        QpnDataType.Numeric,
+        'Slope',
+        "Slope (rise over run).",
+        False,
+        False,
+        {'defaultValue': 0.15}
+    )
+)
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'THRESHOLD',
+        QpnDataType.Numeric,
+        'Threshold',
+        "Elevation threshold.",
+        False,
+        False,
+        {'defaultValue': 0.5}
+    )
+)
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'WINDOW',
+        QpnDataType.Numeric,
+        'Window',
+        "Max window size.",
+        False,
+        False,
+        {'defaultValue': 18.0}
+    )
+)
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'WHERE',
+        QpnDataType.String,
+        'Where',
+        "An expression that limits points passed to this filter.",
+        False,
+        False,
+        {'defaultValue': None}
+    )
+)
+PdalPipelineFilterSmrf.addInput(
+    QpnAlgorithmInput(
+        'WHEREMERGE',
+        QpnDataType.Enum,
+        'Where Merge',
+        "A strategy for merging points skipped by a `where` option when running in standard mode. If true, the skipped points are added to the first point view returned by the skipped filter or if no views are returned, placed in their own view. If false, skipped points are placed in their own point view. If auto, skipped points are merged into the returned point view provided that only one point view is returned and it has the same point count as it did when the filter was run, otherwise the skipped points are placed in their own view.",
+        False,
+        False,
+        {'enumValues':
+            [
+                ('auto', 'auto'),
+                ('true', 'true'),
+                ('false', 'false')],
+            'defaultValue': 'auto'}
+    )
+)
+PdalPipelineFilterSmrf.addOutput(
+    QpnAlgorithmOutput(
+        'OUTPUT',
+        QpnDataType.PointCloudLayer,
+        'Output Point Cloud',
+        'Output point cloud layer',
+        True
+    )
+)
+
+# filters.sparsesurface
+PdalPipelineFilterSparseSurface = QpnAlgorithm(
+    'pdal:pipelinefiltersparsesurface',
+    'filters.sparsesurface',
+    'Sparse Surface Filter',
+)
+PdalPipelineFilterSparseSurface.provider = 'PDAL'
+PdalPipelineFilterSparseSurface.group = 'Pipeline - Filters'
+PdalPipelineFilterSparseSurface.help = "The Sparse Surface filter segments input points into two classes: ground or low point. It does this by adding ground points in ascending elevation order, and masking all neighbor points within a specified radius as low points. This process creates a sparse sampling of the ground estimate akin to the Poisson disk sampling available in filters.sample and marks all other points as low noise. It is expected that the input point cloud will either only include points labeled as ground or the where option will be employed to limit points to those marked as ground."
+
+PdalPipelineFilterSparseSurface.addInput(
+    QpnAlgorithmInput(
+        'INPUT',
+        QpnDataType.PointCloudLayer,
+        'Input Point Cloud',
+        'Input point cloud layer',
+        False,
+        False
+    )
+)
+PdalPipelineFilterSparseSurface.addInput(
+    QpnAlgorithmInput(
+        'RADIUS',
+        QpnDataType.Numeric,
+        'Radius',
+        "Mask neighbor points as low noise.",
+        False,
+        False,
+        {'defaultValue': 1.0}
+    )
+)
+PdalPipelineFilterSparseSurface.addInput(
+    QpnAlgorithmInput(
+        'WHERE',
+        QpnDataType.String,
+        'Where',
+        "An expression that limits points passed to this filter.",
+        False,
+        False,
+        {'defaultValue': None}
+    )
+)
+PdalPipelineFilterSparseSurface.addInput(
+    QpnAlgorithmInput(
+        'WHEREMERGE',
+        QpnDataType.Enum,
+        'Where Merge',
+        "A strategy for merging points skipped by a `where` option when running in standard mode. If true, the skipped points are added to the first point view returned by the skipped filter or if no views are returned, placed in their own view. If false, skipped points are placed in their own point view. If auto, skipped points are merged into the returned point view provided that only one point view is returned and it has the same point count as it did when the filter was run, otherwise the skipped points are placed in their own view.",
+        False,
+        False,
+        {'enumValues':
+            [
+                ('auto', 'auto'),
+                ('true', 'true'),
+                ('false', 'false')],
+            'defaultValue': 'auto'}
+    )
+)
+PdalPipelineFilterSparseSurface.addOutput(
+    QpnAlgorithmOutput(
+        'OUTPUT',
+        QpnDataType.PointCloudLayer,
+        'Output Point Cloud',
+        'Output point cloud layer',
+        True
+    )
+)
+
+# filters.trajectory
+PdalPipelineFilterTrajectory = QpnAlgorithm(
+    'pdal:pipelinefiltertrajectory',
+    'filters.trajectory',
+    'Trajectory Filter',
+)
+PdalPipelineFilterTrajectory.provider = 'PDAL'
+PdalPipelineFilterTrajectory.group = 'Pipeline - Filters'
+PdalPipelineFilterTrajectory.help = "The trajectory filter computes an estimate the the sensor location based on the position of multiple returns and the sensor scan angle. It is primarily useful for LAS input as it requires scan angle and return counts in order to work."
+
+PdalPipelineFilterTrajectory.addInput(
+    QpnAlgorithmInput(
+        'INPUT',
+        QpnDataType.PointCloudLayer,
+        'Input Point Cloud',
+        'Input point cloud layer',
+        False,
+        False
+    )
+)
+PdalPipelineFilterTrajectory.addInput(
+    QpnAlgorithmInput(
+        'DTR',
+        QpnDataType.Numeric,
+        'DTR',
+        'Multi-return sampling interval in seconds.',
+        False,
+        False,
+        {'defaultValue': 0.001}
+    )
+)
+PdalPipelineFilterTrajectory.addInput(
+    QpnAlgorithmInput(
+        'DST',
+        QpnDataType.Numeric,
+        'DST',
+        'Single-return sampling interval in seconds.',
+        False,
+        False,
+        {'defaultValue': 0.001}
+    )
+)
+PdalPipelineFilterTrajectory.addInput(
+    QpnAlgorithmInput(
+        'MINSEP',
+        QpnDataType.Numeric,
+        'Min Sep',
+        'Minimum separation of returns considered in meters',
+        False,
+        False,
+        {'defaultValue': 0.01}
+    )
+)
+PdalPipelineFilterTrajectory.addInput(
+    QpnAlgorithmInput(
+        'TBLOCK',
+        QpnDataType.Numeric,
+        'Block Size',
+        "Block size for cubic spline in seconds.",
+        False,
+        False,
+        {'defaultValue': 1.0}
+    )
+)
+PdalPipelineFilterTrajectory.addInput(
+    QpnAlgorithmInput(
+        'TOUT',
+        QpnDataType.Numeric,
+        'Output Interval',
+        'Output data interval in seconds.',
+        False,
+        False,
+        {'defaultValue': 0.01}
+    )
+)
+PdalPipelineFilterTrajectory.addInput(
+    QpnAlgorithmInput(
+        'WHERE',
+        QpnDataType.String,
+        'Where',
+        "An expression that limits points passed to this filter.",
+        False,
+        False,
+        {'defaultValue': None}
+    )
+)
+PdalPipelineFilterTrajectory.addInput(
+    QpnAlgorithmInput(
+        'WHEREMERGE',
+        QpnDataType.Enum,
+        'Where Merge',
+        "A strategy for merging points skipped by a `where` option when running in standard mode. If true, the skipped points are added to the first point view returned by the skipped filter or if no views are returned, placed in their own view. If false, skipped points are placed in their own point view. If auto, skipped points are merged into the returned point view provided that only one point view is returned and it has the same point count as it did when the filter was run, otherwise the skipped points are placed in their own view.",
+        False,
+        False,
+        {'enumValues':
+            [
+                ('auto', 'auto'),
+                ('true', 'true'),
+                ('false', 'false')],
+            'defaultValue': 'auto'}
+    )
+)
+PdalPipelineFilterTrajectory.addOutput(
     QpnAlgorithmOutput(
         'OUTPUT',
         QpnDataType.PointCloudLayer,
